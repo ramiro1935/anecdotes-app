@@ -1,6 +1,5 @@
 export const initialState = {
 	message: '',
-	style: 'success',
 }
 
 const notificationReducer = (state = initialState, action) => {
@@ -8,21 +7,30 @@ const notificationReducer = (state = initialState, action) => {
 		case 'SET_NOTIFICATION':
 			return {
 				message: action.data.message,
-				style: action.data.style,
 			}
-
+		case 'CLEAR_NOTIFICATION': {
+			return {
+				message: '',
+			}
+		}
 		default:
 			return state
 	}
 }
 
-export const setNotification = ({ message, style = 'success' }) => {
-	return {
-		type: 'SET_NOTIFICATION',
-		data: {
-			message,
-			style,
-		},
+export const setNotification = (message, time) => {
+	return async dispatch => {
+		dispatch({
+			type: 'SET_NOTIFICATION',
+			data: {
+				message,
+			},
+		})
+		setTimeout(() => {
+			dispatch({
+				type: 'CLEAR_NOTIFICATION',
+			})
+		}, time * 1000)
 	}
 }
 
